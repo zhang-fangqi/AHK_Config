@@ -21,6 +21,7 @@ CapsLock::Ctrl
 ;use control+2 to open Neovim
 ^2::
 {
+	DetectHiddenWindows True
 	SetTitleMatchMode 2
 	if WinExist("Neovim")
 	{
@@ -29,8 +30,18 @@ CapsLock::Ctrl
 	else
 	{
 		Run "nvim-qt.exe"
-		PostMessage 0x0050, 0, 00000409,, "A"  ; 0x0050 is WM_INPUTLANGCHANGEREQUEST.
 	}
+	Sleep 1000
+	hWnd := winGetID("A")
+    SendMessage(
+        0x283, ; Message : WM_IME_CONTROL
+        0x002, ; wParam : IMC_SETCONVERSIONMODE
+        0,  ; lParam ：0 - EN
+        ,
+        "ahk_id " DllCall("imm32\ImmGetDefaultIMEWnd", "Uint", hWnd, "Uint")
+    )
 	return
 }
+
+
 
