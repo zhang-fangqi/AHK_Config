@@ -3,18 +3,26 @@
 ;map CapsLock to Control
 CapsLock::Ctrl
 
-;use control+1 to open edge
-^1::
+SwitchWindow(exeName)
 {
-	SetTitleMatchMode 2
-	if WinExist("Microsoft​ Edge")
+	if WinExist("ahk_exe " . exeName)
 	{
-		WinActivate
+		if WinActive("ahk_exe " . exeName)
+			WinMinimize
+		else
+			WinActivate("ahk_exe " . exeName)
 	}
 	else
 	{
-		Run "msedge"
+		Run exeName
 	}
+	return
+}
+
+;use control+1 to open edge
+^1::
+{
+	SwitchWindow("msedge.exe")
 	return
 }
 
@@ -22,24 +30,19 @@ CapsLock::Ctrl
 ^2::
 {
 	DetectHiddenWindows True
-	SetTitleMatchMode 2
-	if WinExist("Neovim")
+	SwitchWindow("nvim-qt.exe")
+	if WinActive("ahk_exe nvim-qt.exe")
 	{
-		WinActivate
+		Sleep 1000
+		hWnd := winGetID("A")
+		SendMessage(
+			0x283, ; Message : WM_IME_CONTROL
+			0x002, ; wParam : IMC_SETCONVERSIONMODE
+			0,  ; lParam ：0 - EN
+			,
+			"ahk_id " DllCall("imm32\ImmGetDefaultIMEWnd", "Uint", hWnd, "Uint")
+		)
 	}
-	else
-	{
-		Run "nvim-qt.exe"
-	}
-	Sleep 1000
-	hWnd := winGetID("A")
-    SendMessage(
-        0x283, ; Message : WM_IME_CONTROL
-        0x002, ; wParam : IMC_SETCONVERSIONMODE
-        0,  ; lParam ：0 - EN
-        ,
-        "ahk_id " DllCall("imm32\ImmGetDefaultIMEWnd", "Uint", hWnd, "Uint")
-    )
 	return
 }
 
