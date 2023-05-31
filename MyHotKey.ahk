@@ -3,6 +3,16 @@
 ;map CapsLock to Control
 CapsLock::Ctrl
 
+;Switch windows with the scroll wheel when the mouse is on the taskbar
+#HotIf MouseIsOver("ahk_class Shell_TrayWnd")
+WheelUp::Send "!+{Esc}"
+WheelDown::Send "!{Esc}"
+
+MouseIsOver(WinTitle) {
+    MouseGetPos ,, &Win
+    return WinExist(WinTitle " ahk_id " Win)
+}
+
 SwitchWindow(exeName)
 {
 	if WinExist("ahk_exe " . exeName)
