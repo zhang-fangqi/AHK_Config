@@ -7,7 +7,7 @@ CapsLock::Ctrl
 #HotIf MouseIsOver("ahk_class Shell_TrayWnd")
 WheelUp::Send "!+{Esc}"
 WheelDown::Send "!{Esc}"
-
+#HotIf
 MouseIsOver(WinTitle) {
     MouseGetPos ,, &Win
     return WinExist(WinTitle " ahk_id " Win)
@@ -21,10 +21,12 @@ SwitchWindow(exeName)
 			WinMinimize
 		else
 			WinActivate("ahk_exe " . exeName)
+		Sleep 200
 	}
 	else
 	{
 		Run exeName
+		Sleep 1000
 	}
 	return
 }
@@ -43,7 +45,6 @@ SwitchWindow(exeName)
 	SwitchWindow("nvim-qt.exe")
 	if WinActive("ahk_exe nvim-qt.exe")
 	{
-		Sleep 1000
 		hWnd := winGetID("A")
 		SendMessage(
 			0x283, ; Message : WM_IME_CONTROL
