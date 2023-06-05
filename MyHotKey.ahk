@@ -31,8 +31,8 @@ SwitchWindow(windowName)
 	return
 }
 
-;use control + alt + e to open explorer
-^!e::
+;use control + 1 to open explorer
+^1::
 {
 	if(WinActive("AHK_Class CabinetWClass")){
 		WinMinimize
@@ -44,14 +44,14 @@ SwitchWindow(windowName)
 	return
 }
 
-;use control+1 to open edge
-^1::
+;use control+2 to open edge
+^2::
 {
 	SwitchWindow("ahk_exe msedge.exe")
 	return
 }
 ;use control+2 to open Neovim
-^2::
+^3::
 {
 	DetectHiddenWindows True
 	SwitchWindow("ahk_exe nvim-qt.exe")
