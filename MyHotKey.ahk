@@ -28,7 +28,28 @@ SwitchWindow(exeName)
 		Run exeName
 		Sleep 1000
 	}
-	return
+}
+
+;switch the input method to English
+SwitchInputMethodLang(lang)
+{
+	Local param := 0
+	if(lang == "English")
+	{
+		param := 0
+	}
+	if(lang == "Chinese")
+	{
+		param := 1025
+	}
+	hWnd := winGetID("A")
+	SendMessage(
+	0x283, ; Message : WM_IME_CONTROL
+	0x002, ; wParam : IMC_SETCONVERSIONMODE
+	param, ; lParam ：0 - EN, 1025 - CN
+		,
+	"ahk_id " DllCall("imm32\ImmGetDefaultIMEWnd", "Uint", hWnd, "Uint")
+	)
 }
 
 ;use control + 1 to open explorer
@@ -41,16 +62,14 @@ SwitchWindow(exeName)
 	} else {
 		run "C:\Windows\explorer.exe"
 	}
-	return
 }
 
-;use control+2 to open edge
+;use control + 2 to open edge
 ^2::
 {
 	SwitchWindow("msedge.exe")
-	return
 }
-;use control+2 to open Neovim
+;use control + 3 to open Neovim
 ^3::
 {
 	DetectHiddenWindows True
@@ -59,16 +78,8 @@ SwitchWindow(exeName)
 	if WinActive("ahk_exe nvim-qt.exe")
 	{
 		Sleep 500
-		hWnd := winGetID("A")
-		SendMessage(
-		0x283, ; Message : WM_IME_CONTROL
-		0x002, ; wParam : IMC_SETCONVERSIONMODE
-		0, ; lParam ：0 - EN
-			,
-		"ahk_id " DllCall("imm32\ImmGetDefaultIMEWnd", "Uint", hWnd, "Uint")
-		)
+		SwitchInputMethodLang("English")
 	}
-	return
 }
 
 ;move the window to the center
@@ -78,7 +89,7 @@ CheckDCIOTWindow()
 	;access global variables within a function
 	;you need to add global within the function
 	global
-	If WinExist("DCIOT Simulator")
+	If WinActive("DCIOT Simulator")
 	{
 		if(IsDCIOTWindowOpen == false)
 		{
@@ -101,7 +112,34 @@ CheckDCIOTWindow()
 			IsDCIOTWindowOpen := false
 		}
 	}
-	Return
 }
-SetTimer CheckDCIOTWindow, 500
+
+;below code doesn't work for powertoys
+IsPowerToysWindowOpen := false
+CheckPowerToysRunWindow()
+{
+	; global
+	; If WinActive("ahk_exe PowerToys.PowerLauncher.exe")
+	; {
+	; 	if(IsPowerToysWindowOpen == false)
+	; 	{
+	; 		IsPowerToysWindowOpen := true
+	; 		SwitchInputMethodLang("English")
+			
+	; 	}
+	; }
+	; else{
+	; 	if(IsPowerToysWindowOpen == true)
+	; 	{
+	; 		IsPowerToysWindowOpen := false
+	; 	}
+	; }
+}
+
+CheckWindows()
+{
+	CheckDCIOTWindow()
+	CheckPowerToysRunWindow()
+}
+SetTimer CheckWindows, 500
 
