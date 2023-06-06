@@ -13,19 +13,19 @@ MouseIsOver(WinTitle) {
 	return WinExist(WinTitle " ahk_id " Win)
 }
 
-SwitchWindow(windowName)
+SwitchWindow(exeName)
 {
-	if WinExist(windowName)
+	if WinExist("ahk_exe " . exeName)
 	{
-		if WinActive(windowName)
+		if WinActive("ahk_exe " . exeName)
 			WinMinimize
 		else
-			WinActivate(windowName)
+			WinActivate("ahk_exe " . exeName)
 		Sleep 200
 	}
 	else
 	{
-		Run windowName
+		Run exeName
 		Sleep 1000
 	}
 	return
@@ -47,16 +47,18 @@ SwitchWindow(windowName)
 ;use control+2 to open edge
 ^2::
 {
-	SwitchWindow("ahk_exe msedge.exe")
+	SwitchWindow("msedge.exe")
 	return
 }
 ;use control+2 to open Neovim
 ^3::
 {
 	DetectHiddenWindows True
-	SwitchWindow("ahk_exe nvim-qt.exe")
+	SwitchWindow("nvim-qt.exe")
+	
 	if WinActive("ahk_exe nvim-qt.exe")
 	{
+		Sleep 500
 		hWnd := winGetID("A")
 		SendMessage(
 		0x283, ; Message : WM_IME_CONTROL
