@@ -69,8 +69,27 @@ SwitchInputMethodLang(lang)
 {
 	SwitchWindow("msedge.exe")
 }
-;use control + 3 to open Neovim
+
+;use control + 3 to open vscode
 ^3::
+{
+	; SwitchWindow("Code.exe")
+	if WinExist("ahk_exe Code.exe")
+	{
+		if WinActive("ahk_exe Code.exe")
+			WinMinimize
+		else
+			WinActivate("ahk_exe Code.exe")
+	}
+	else
+	{
+		code := StrReplace(A_AppData, "Roaming", "Local\Programs\Microsoft VS Code\Code.exe")
+		Run code
+	}
+}
+
+;use control + 4 to open Neovim
+^4::
 {
 	DetectHiddenWindows True
 	SwitchWindow("nvim-qt.exe")
@@ -125,7 +144,7 @@ CheckPowerToysRunWindow()
 	; 	{
 	; 		IsPowerToysWindowOpen := true
 	; 		SwitchInputMethodLang("English")
-			
+	
 	; 	}
 	; }
 	; else{
