@@ -3,8 +3,10 @@
 ;map CapsLock to Control
 CapsLock::Ctrl
 
-;map Hyphen-Minus key to Minus Sign key
+;map Hyphen-Minus key to Minus Sign key when Ctrl key is pressed
+#HotIf GetKeyState("Ctrl", "P")
 -::NumpadSub
+#HotIf
 
 ;Switch windows with the scroll wheel when the mouse is on the taskbar
 #HotIf MouseIsOver("ahk_class Shell_TrayWnd")
