@@ -4,7 +4,15 @@
 CapsLock::Ctrl
 
 ;map Hyphen-Minus key to Minus Sign key
--::NumpadSub
+; ^-::^NumpadSub
+#HotIf WinActive("ahk_exe Code.exe") || WinActive("ahk_exe nvim-qt.exe")
+^-::^NumpadSub
+#HotIf
+;another way
+; map Hyphen-Minus key to Minus Sign key when Ctrl key is pressed
+; #HotIf GetKeyState("Ctrl", "P")
+; -::NumpadSub
+; #HotIf
 
 ;Switch windows with the scroll wheel when the mouse is on the taskbar
 #HotIf MouseIsOver("ahk_class Shell_TrayWnd")
