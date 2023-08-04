@@ -123,7 +123,7 @@ CheckDCIOTWindow()
 	{
 		if(IsDCIOTWindowOpen == false)
 		{
-			Sleep 2000
+			Sleep 100
 			MonitorCount := MonitorGetCount()
 			WinGetPos &x, &y, &w, &h, "DCIOT Simulator"
 			If (MonitorCount >= 2) ; check if there are multiple displays
